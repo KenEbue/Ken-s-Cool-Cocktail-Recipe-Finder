@@ -1,62 +1,88 @@
 import React, { useState } from 'react';
 
-const CocktailForm = () => {
+const CocktailForm = ({ onCocktailAdd }) => {
   const [name, setName] = useState('');
-  const [recipe, setRecipe] = useState('');
-  const [instructions, setInstructions] = useState('');
+  const [image, setImage] = useState('');
+  const [ingredients, setIngredients] = useState([]);
 
-  const handleSubmit = (event) => {
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleImageChange = (event) => {
+    setImage(event.target.value);
+  };
+
+  const handleIngredientChange = (event, index) => {
+    const updatedIngredients = [...ingredients];
+    updatedIngredients[index] = event.target.value;
+    setIngredients(updatedIngredients);
+  };
+
+  const handleAddIngredient = () => {
+    setIngredients([...ingredients, '']);
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Create a new cocktail object with the form data
-    const newCocktail = {
+    const cocktailData = {
       name,
-      recipe,
-      instructions,
+      image,
+      ingredients,
     };
 
-    // TODO: Make a POST request to the API endpoint to add the new cocktail
+    try {
+      const response = await fetch('API_URL/cocktails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cocktailData),
+      });
 
-    // Reset the form fields after submission
-    setName('');
-    setRecipe('');
-    setInstructions('');
+      if (response.ok) {
+        const newCocktail = await response.json();
+        onCocktailAdd(newCocktail); // Pass the new cocktail data to the parent component
+        setName('');
+        setImage('');
+        setIngredients([]);
+      } else {
+        console.error('Error adding cocktail:', response.status);
+      }
+    } catch (error) {
+      console.error('Error adding cocktail:', error);
+    }
   };
 
   return (
     <div>
-      <h2>Create a New Cocktail</h2>
+      <h2>Add New Cocktail</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="recipe">Recipe:</label>
-          <input
-            type="text"
-            id="recipe"
-            value={recipe}
-            onChange={(event) => setRecipe(event.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="instructions">Instructions:</label>
-          <textarea
-            id="instructions"
-            value={instructions}
-            onChange={(event) => setInstructions(event.target.value)}
-            required
-          ></textarea>
-        </div>
-        <button type="submit">Submit</button>
+        <label>
+          Name:
+          <input type="text" value={name} onChange={handleNameChange} required />
+        </label>
+        <label>
+          Image URL:
+          <input type="text" value={image} onChange={handleImageChange} required />
+        </label>
+        <label>
+          Ingredients:
+          {ingredients.map((ingredient, index) => (
+            <input
+              key={index}
+              type="text"
+              value={ingredient}
+              onChange={(event) => handleIngredientChange(event, index)}
+              required
+            />
+          ))}
+          <button type="button" onClick={handleAddIngredient}>
+            Add Ingredient
+          </button>
+        </label>
+        <button type="submit">Add Cocktail</button>
       </form>
     </div>
   );
