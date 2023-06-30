@@ -1,0 +1,21 @@
+{
+    "cocktails": [
+      {
+        "id": 1,
+        "name": "Mojito",
+        "image": "https://example.com/mojito.jpg",
+        "recipe": "Muddle mint leaves and lime juice. Add rum, sugar, and ice. Stir and top with soda water. Garnish with mint leaves and lime wedge.",
+        "instructions": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "rating": 4.5
+      },
+      {
+        "id": 2,
+        "name": "Cosmopolitan",
+        "image": "https://example.com/cosmopolitan.jpg",
+        "recipe": "Shake vodka, cranberry juice, lime juice, and triple sec with ice. Strain into a martini glass. Garnish with a lime twist.",
+        "instructions": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "rating": 4.2
+      }
+    ]
+  }
+  
