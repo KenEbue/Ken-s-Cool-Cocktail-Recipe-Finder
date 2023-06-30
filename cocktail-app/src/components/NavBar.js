@@ -6,10 +6,10 @@ function NavBar() {
     <nav>
       <ul>
         <li>
-          <Link to="/movies">Movies</Link>
+          <Link to="/cocktails">Cocktails</Link>
         </li>
         <li>
-          <Link to="/movies/new">New Movie</Link>
+          <Link to="/cocktails/new">Add Cocktail</Link>
         </li>
       </ul>
     </nav>
